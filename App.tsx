@@ -1,118 +1,73 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import 'react-native-gesture-handler';
+import "./src/locales/i18n";
+import React, { useEffect } from 'react';
+import Navigation from './src/routes/Navigation';
+import { StatusBar } from 'native-base';
+import * as SplashScreen from 'expo-splash-screen';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// Providers
+import ThemeProvider from './src/theme/ThemeProvider';
+import { AuthProvider } from './src/context/AuthContext';
+import { SettingsProvider } from './src/context/SettingsContext';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+// Components
+import DevBadge from './src/components/DevBadge';
+import AccessChecker from "./src/components/AccessChecker";
+
+
+// Hooks
+import useAuth from './src/hooks/useAuth';
+import useLoadingComplete from './src/hooks/useLoadingComplete';
+import useSettings from './src/hooks/useSettings';
+import useLoadAssets from './src/hooks/useLoadAssets';
+SplashScreen.preventAutoHideAsync();
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const { colorMode, settingsInitilized, settingsError } = useSettings()
+  const { authInitilized, authError } = useAuth()
+  const { assetsInitilized, assetsError } = useLoadAssets()
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+
+  // useLoadingComplete hook will take all loading states and return true if all of them are true and also return errors if exist
+  const { complete, errors } = useLoadingComplete([settingsInitilized, authInitilized, assetsInitilized], [settingsError, authError, assetsError])
+
+  useEffect(() => {
+    if (complete) {
+      SplashScreen.hideAsync();
+    }
+  }, [complete])
+
+
 
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <React.Fragment>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+        backgroundColor={colorMode == 'light' ? '#fff' : '#000'}
+        barStyle={colorMode == 'light' ? 'dark-content' : 'light-content'}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <ThemeProvider colorMode={colorMode}>
+        <React.Fragment>
+          <DevBadge />
+          <Navigation />
+          <AccessChecker />
+        </React.Fragment>
+      </ThemeProvider>
+    </React.Fragment>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
-export default App;
+function WrappedApp() {
+  return (
+    <SettingsProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </SettingsProvider>
+  )
+
+}
+
+export default WrappedApp;
