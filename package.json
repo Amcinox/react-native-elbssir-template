@@ -9,6 +9,8 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
+    "device:iphone": "react-native run-ios --simulator='iPhone 14 Pro Max (16.4)'",
+    "device:ipad": "react-native run-ios --simulator='iPad Pro (12.9-inch) (6th generation)'",
     "splash:android": "expo-splash-screen -p android -b  white -i ./assets/images/splash.png --dark-mode-background-color black --dark-mode-image-path ./assets/images/splash.png",
     "splash:ios": "expo-splash-screen -p ios -b white -i ./assets/images/splash.png --dark-mode-background-color black --dark-mode-image-path ./assets/images/splash.png"
   },
@@ -26,6 +28,7 @@
     "lottie-react-native": "^5.1.6",
     "native-base": "^3.4.28",
     "react": "18.2.0",
+    "react-hook-form": "^7.45.0",
     "react-i18next": "^13.0.1",
     "react-native": "0.72.0",
     "react-native-device-info": "^10.6.0",
