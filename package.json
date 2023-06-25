@@ -2,7 +2,7 @@
   "name": "Elbssir",
   "version": "0.0.1",
   "private": true,
-  "author":"Mohamed Elbssir",
+  "author": "Mohamed Elbssir",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -11,6 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "expo": "^48.0.0",
     "react": "18.2.0",
     "react-native": "0.72.0"
   },
