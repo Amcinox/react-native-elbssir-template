@@ -133,7 +133,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         const user = {
           id: 123,
           name: "Simo Elbssir",
-          email: "example@egaliti.com",
+          email: "example@elbssir.com",
           avatar: "https://static.wikia.nocookie.net/star-wars-legends/images/d/d8/DjinDjarinS2-EW.png",
         }
 
@@ -176,7 +176,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         user: {
           id: 123,
           name: "Simo Elbssir",
-          email: "example@egaliti.com",
+          email: "example@elbssir.com",
           avatar: "https://static.wikia.nocookie.net/star-wars-legends/images/d/d8/DjinDjarinS2-EW.png",
         }
       },
