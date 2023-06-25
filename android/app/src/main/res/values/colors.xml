@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- Below line is handled by '@expo/configure-splash-screen' command and it's discouraged to modify it manually -->
-  <string name="expo_splash_screen_resize_mode" translatable="false">contain</string>
-  <string name="app_name">Elbssir</string>
+  <color name="splashscreen_background">#FFFFFF</color>
 </resources>
